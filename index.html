@@ -1,112 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Patient Assessment - Skeleton Map</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interactive Skeleton SVG</title>
   <style>
-    body { background: #f8f9fa; padding-bottom: 40px; }
-    .highlight { filter: drop-shadow(0 0 8px yellow); cursor: pointer; }
-    object, img { max-width: 100%; height: auto; }
-    label span.ar { display: inline-block; width: 45%; }
-    label span.en { display: inline-block; width: 45%; color: #6c757d; }
+    body { font-family: sans-serif; text-align: center; background: #f9f9f9; margin: 0; padding: 20px; }
+    svg { max-width: 90vw; height: auto; cursor: pointer; }
+    .highlight { fill: orange !important; }
   </style>
 </head>
 <body>
-
-<nav class="navbar navbar-dark bg-dark mb-3">
-  <div class="container-fluid">
-    <span class="navbar-brand mb-0 h1">Patient Assessment / تقييم المريض</span>
-  </div>
-</nav>
-
-<div class="container">
-  <div class="row">
-    <!-- خريطة الجسم -->
-    <div class="col-md-4 text-center mb-3">
-      <object id="bodyMap" type="image/svg+xml" data="skeleton-overlay.svg"></object>
-    </div>
-
-    <!-- النموذج -->
-    <div class="col-md-8">
-      <!-- شريط التقدم -->
-      <div class="progress mb-3">
-        <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%">0%</div>
-      </div>
-
-      <!-- أقسام النموذج -->
-      <div class="accordion" id="formAccordion">
-        <!-- مثال: الصدر -->
-        <div class="accordion-item" data-part="chest">
-          <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#collapse-chest" aria-expanded="false">
-              <span class="ar">صدر / Chest</span>
-            </button>
-          </h2>
-          <div id="collapse-chest" class="accordion-collapse collapse"
-               data-bs-parent="#formAccordion">
-            <div class="accordion-body">
-              <label><span class="ar">هل تشعر بألم؟</span><span class="en">Pain present?</span>
-                <select id="chest-pain" class="form-select mb-2">
-                  <option value="">-- اختر / select --</option>
-                  <option value="no">لا / No</option>
-                  <option value="mild">خفيف / Mild</option>
-                  <option value="severe">شديد / Severe</option>
-                </select>
-              </label>
-            </div>
-          </div>
-        </div>
-        <!-- فيك تضيف باقي المناطق بنفس الطريقة -->
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  const clickableSVG = document.getElementById('bodyMap');
-  const parts = Array.from(document.querySelectorAll('.accordion-item'));
-  const progressBar = document.getElementById('progressBar');
-
-  clickableSVG.addEventListener('load', () => {
-    const svg = clickableSVG.contentDocument;
-    parts.forEach(item => {
-      const part = item.getAttribute('data-part');
-      const area = svg.getElementById(part);
-      if (area) {
-        area.addEventListener('click', () => {
-          area.classList.toggle('highlight');
-          const target = document.getElementById('collapse-' + part);
-          const bs = new bootstrap.Collapse(target, { toggle: true });
-          updateProgress();
-          setTimeout(() => {
-            target.scrollIntoView({ behavior: 'smooth' });
-          }, 300);
-        });
-      }
-    });
-  });
-
-  function updateProgress() {
-    const total = parts.length;
-    let done = 0;
-    parts.forEach(item => {
-      const part = item.getAttribute('data-part');
-      const sel = document.getElementById(part + '-pain');
-      if (sel && sel.value) done++;
-    });
-    const pct = Math.round((done / total) * 100);
-    progressBar.style.width = pct + '%';
-    progressBar.innerText = pct + '%';
-  }
-
-  document.querySelectorAll('select').forEach(sel => {
-    sel.addEventListener('change', updateProgress);
-  });
-</script>
-
+  <h1>Skeleton Anatomy</h1>
+  <object id="skeletonSvg" type="image/svg+xml" data="public/assets/AA.svg"></object>
+  <script src="main.js"></script>
 </body>
 </html>
