@@ -1,5 +1,165 @@
-<!-- starter file -->
-<html>
-  <head><title>Assessment Form</title></head>
-  <body><h1>Hello Codex 👋</h1></body>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Patient Assessment</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; }
+    .highlight { filter: drop-shadow(0 0 8px yellow); }
+    label span.ar { display:block; }
+    label small.en { display:block; color:#6c757d; }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">نموذج التقييم / Assessment Form</a>
+  </div>
+</nav>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <object id="bodyMap" type="image/svg+xml" data="https://raw.githubusercontent.com/justinjmoses/body-map-click/main/bodymap-clickable.svg" class="w-100"></object>
+    </div>
+    <div class="col-md-8">
+      <div class="progress mb-3">
+        <div class="progress-bar" id="progressBar" role="progressbar" style="width:0%"></div>
+      </div>
+      <div class="accordion" id="assessmentAccordion"></div>
+      <button id="submitBtn" class="btn btn-primary mt-3"><i class="bi bi-check-circle"></i> Submit</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const sections = [
+  {
+    title: 'General',
+    fields: [
+      {label:'Patient Name', ar:'اسم المريض', type:'text'},
+      {label:'Age', ar:'العمر', type:'text'},
+      {label:'Gender', ar:'الجنس', type:'select', options:['Male','Female']}
+    ]
+  },
+  { title: 'Head & Neck', fields:[{label:'Findings', ar:'ملاحظات', type:'text'}] },
+  { title: 'Thorax', fields:[{label:'Findings', ar:'ملاحظات', type:'text'}] },
+  { title: 'Pelvis', fields:[{label:'Findings', ar:'ملاحظات', type:'text'}] },
+  { title: 'Left Arm', fields:[{label:'Findings', ar:'ملاحظات', type:'text'}] },
+  { title: 'Right Arm', fields:[{label:'Findings', ar:'ملاحظات', type:'text'}] },
+  { title: 'Left Leg', fields:[{label:'Findings', ar:'ملاحظات', type:'text'}] },
+  { title: 'Right Leg', fields:[{label:'Findings', ar:'ملاحظات', type:'text'}] }
+];
+
+function createInput(field, index, sectionId) {
+  const id = `input-${sectionId}-${index}`;
+  const div = document.createElement('div');
+  div.className = 'mb-3';
+
+  const label = document.createElement('label');
+  label.className = 'form-label';
+  label.id = `label-${field.label.replace(/\s+/g,'-').replace(/&/g,'-')}`;
+  const ar = document.createElement('span'); ar.textContent = field.ar; ar.className = 'ar';
+  const en = document.createElement('small'); en.textContent = field.label; en.className = 'en';
+  label.appendChild(ar); label.appendChild(en);
+
+  let input;
+  if (field.type === 'select') {
+    input = document.createElement('select');
+    input.className = 'form-select';
+    input.innerHTML = '<option value=""></option>' + field.options.map(o => `<option value="${o}">${o}</option>`).join('');
+  } else {
+    input = document.createElement('input');
+    input.type = field.type;
+    input.className = 'form-control';
+  }
+  input.id = id;
+
+  input.addEventListener('input', updateProgress);
+  div.appendChild(label);
+  div.appendChild(input);
+  return div;
+}
+
+function buildForm() {
+  const acc = document.getElementById('assessmentAccordion');
+  sections.forEach((sec, secIndex) => {
+    const item = document.createElement('div');
+    item.className = 'accordion-item';
+    const headerId = `heading-${secIndex}`;
+    const collapseId = `collapse-${secIndex}`;
+    const header = `<h2 class="accordion-header" id="${headerId}">
+      <button class="accordion-button ${secIndex>0 ? 'collapsed':''}" type="button" data-bs-toggle="collapse" data-bs-target="#${collapseId}">
+        <span id="label-${sec.title.replace(/\s+/g,'-').replace(/&/g,'-')}">${sec.title}</span>
+      </button>
+    </h2>`;
+    const body = document.createElement('div');
+    body.id = collapseId;
+    body.className = `accordion-collapse collapse ${secIndex==0?'show':''}`;
+    body.setAttribute('aria-labelledby', headerId);
+    const bodyInner = document.createElement('div');
+    bodyInner.className = 'accordion-body';
+    sec.fields.forEach((field,i)=> bodyInner.appendChild(createInput(field,i,secIndex)));
+    body.appendChild(bodyInner);
+    item.innerHTML = header;
+    item.appendChild(body);
+    acc.appendChild(item);
+  });
+  updateProgress();
+}
+
+function updateProgress() {
+  const inputs = document.querySelectorAll('#assessmentAccordion input, #assessmentAccordion select');
+  const filled = Array.from(inputs).filter(el => el.value.trim() !== '').length;
+  const percent = Math.round((filled/inputs.length)*100);
+  const bar = document.getElementById('progressBar');
+  bar.style.width = percent + '%';
+  bar.textContent = percent + '%';
+}
+
+function scrollToSection(label) {
+  const id = 'label-' + label.replace(/\s+/g,'-').replace(/&/g,'-');
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+}
+
+function attachMapEvents() {
+  const map = document.getElementById('bodyMap');
+  map.addEventListener('load', () => {
+    const svg = map.contentDocument;
+    if (!svg) return;
+    const regions = {
+      'Head-neck': 'Head & Neck',
+      'Thorax': 'Thorax',
+      'Pelvis': 'Pelvis',
+      'Left-arm': 'Left Arm',
+      'Right-arm': 'Right Arm',
+      'Left-leg': 'Left Leg',
+      'Right-leg': 'Right Leg'
+    };
+    Object.entries(regions).forEach(([id,label])=>{
+      const el = svg.getElementById(id);
+      if (el) {
+        el.style.cursor='pointer';
+        el.addEventListener('click',()=>{
+          el.classList.add('highlight');
+          setTimeout(()=>el.classList.remove('highlight'),800);
+          scrollToSection(label);
+        });
+      }
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  buildForm();
+  attachMapEvents();
+});
+</script>
+</body>
 </html>
