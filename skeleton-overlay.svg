@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="100%" height="100%">
+  <style>
+  .zone { fill: rgba(255, 200, 0, 0.0); stroke: transparent; cursor: pointer; }
+  .zone:hover { fill: rgba(255, 200, 0, 0.2); stroke: orange; stroke-width: 2; }
+</style>
+  <rect id="head" class="zone" x="480" y="160" width="120" height="120"/>
+  <rect id="neck" class="zone" x="500" y="280" width="80" height="40"/>
+  <rect id="chest" class="zone" x="430" y="320" width="220" height="160"/>
+  <rect id="abdomen" class="zone" x="450" y="480" width="180" height="100"/>
+  <rect id="pelvis" class="zone" x="460" y="580" width="160" height="80"/>
+  <rect id="left-arm" class="zone" x="330" y="320" width="100" height="250"/>
+  <rect id="right-arm" class="zone" x="650" y="320" width="100" height="250"/>
+  <rect id="left-leg" class="zone" x="470" y="660" width="60" height="300"/>
+  <rect id="right-leg" class="zone" x="550" y="660" width="60" height="300"/>
+</svg>
