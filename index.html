@@ -3,16 +3,54 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Interactive Skeleton SVG</title>
+  <title>Skeleton Anatomy - الهيكل العظمي</title>
   <style>
-    body { font-family: sans-serif; text-align: center; background: #f9f9f9; margin: 0; padding: 20px; }
-    svg { max-width: 90vw; height: auto; cursor: pointer; }
-    .highlight { fill: orange !important; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      text-align: center;
+      margin: 30px 0 10px;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin: 0;
+    }
+
+    .svg-container {
+      width: 95%;
+      max-width: 1000px;
+      height: 90vh;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    object {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
   </style>
 </head>
 <body>
-  <h1>Skeleton Anatomy</h1>
-  <object id="skeletonSvg" type="image/svg+xml" data="public/assets/AA.svg"></object>
-  <script src="main.js"></script>
+  <header>
+    <h1>Skeleton Anatomy - الهيكل العظمي</h1>
+  </header>
+
+  <div class="svg-container">
+    <object type="image/svg+xml" data="./public/assets/AA.svg">
+      Your browser does not support SVG. يرجى التحديث.
+    </object>
+  </div>
 </body>
 </html>
