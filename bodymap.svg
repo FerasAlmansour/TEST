@@ -1,0 +1,34 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 500" width="100%" height="100%">
+  <style>
+    .body-part { fill: #ccc; stroke: #333; stroke-width: 1; cursor: pointer; }
+    .body-part:hover { fill: #f90; }
+  </style>
+
+  <!-- Head -->
+  <circle id="head" class="body-part" cx="100" cy="40" r="20" />
+  
+  <!-- Neck -->
+  <rect id="neck" class="body-part" x="90" y="60" width="20" height="10" />
+
+  <!-- Chest -->
+  <rect id="chest" class="body-part" x="60" y="70" width="80" height="50" />
+
+  <!-- Abdomen -->
+  <rect id="abdomen" class="body-part" x="70" y="120" width="60" height="40" />
+
+  <!-- Left Arm -->
+  <rect id="left-arm" class="body-part" x="30" y="70" width="30" height="80" />
+
+  <!-- Right Arm -->
+  <rect id="right-arm" class="body-part" x="140" y="70" width="30" height="80" />
+
+  <!-- Pelvis -->
+  <rect id="pelvis" class="body-part" x="80" y="160" width="40" height="20" />
+
+  <!-- Left Leg -->
+  <rect id="left-leg" class="body-part" x="80" y="180" width="15" height="80" />
+
+  <!-- Right Leg -->
+  <rect id="right-leg" class="body-part" x="105" y="180" width="15" height="80" />
+</svg>
